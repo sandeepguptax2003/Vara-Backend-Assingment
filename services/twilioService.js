@@ -4,39 +4,21 @@ const twilio = require("twilio");
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
 const client = new twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-const TWILIO_WHATSAPP_NUMBER = `whatsapp:${TWILIO_PHONE_NUMBER}`;
-
+// Function to send a reminder for water usage via WhatsApp
 function sendWaterUsageReminder(to) {
-  console.log(`Sending water usage reminder to ${to}`);
   return client.messages.create({
-    body: "Please send today's Water Usage Data.",
-    from: TWILIO_WHATSAPP_NUMBER,
+    body: "Please send today's Water Usage.",
+    from: `whatsapp:${TWILIO_PHONE_NUMBER}`,
     to: `whatsapp:${to}`,
-  })
-  .then(message => {
-    console.log(`Reminder sent successfully. SID: ${message.sid}`);
-    return message;
-  })
-  .catch(error => {
-    console.error(`Failed to send reminder: ${error.message}`);
-    throw error;
   });
 }
 
-function sendAcknowledgment(to) {
-  console.log(`Sending acknowledgment to ${to}`);
+// Function to send an acknowledgment after receiving the water usage data
+function sendAcknowledgment(to, from) {
   return client.messages.create({
-    body: "Thank you! Your data has been recorded.",
-    from: `whatsapp:${TWILIO_PHONE_NUMBER}`, // This should be your Twilio WhatsApp Sandbox number
-    to: to, // This will be the user's WhatsApp number
-  })
-  .then(message => {
-    console.log(`Acknowledgment sent successfully. SID: ${message.sid}`);
-    return message;
-  })
-  .catch(error => {
-    console.error(`Failed to send acknowledgment: ${error.message}`);
-    throw error;
+    body: "Thank you! Your Water Usage has been recorded, You can check Sheet for more info.",
+    from: from,
+    to: to,
   });
 }
 
