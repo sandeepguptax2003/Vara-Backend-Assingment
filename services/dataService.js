@@ -9,11 +9,6 @@ function storeData(date, value) {
   let workbook;
   let worksheet;
 
-  // Create the directory if it doesn't exist
-  if (!fs.existsSync(directoryPath)) {
-    fs.mkdirSync(directoryPath, { recursive: true });
-  }
-
   // Check if the Excel file already exists
   if (fs.existsSync(filePath)) {
     // Read the existing file and get the worksheet
